@@ -4,29 +4,29 @@ namespace Database\Seeders;
 
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductVariant;
 use Illuminate\Database\Seeder;
-use Faker\Factory as Faker;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        $faker = Faker::create();
-
-        $products = [
+        $catalog = [
             [
                 'product' => [
-                    'name' => 'Classic White T-Shirt',
+                    'name' => 'Classic T-Shirt',
                     'description' => 'Comfortable cotton t-shirt perfect for everyday wear',
-                    'price' => 29.99,
                     'category' => 'T-Shirts',
-                    'size' => 'M',
-                    'color' => 'White',
-                    'in_stock' => true,
+                ],
+                'variants' => [
+                    ['color' => 'White', 'sizes' => ['S', 'M', 'L'], 'price' => 24.99, 'stock' => 50],
+                    ['color' => 'Black', 'sizes' => ['S', 'M', 'L', 'XL'], 'price' => 26.99, 'stock' => 40],
+                    ['color' => 'Red', 'sizes' => ['L', 'XL'], 'price' => 26.99, 'stock' => 40],
                 ],
                 'images' => [
-                    ['url' => 'https://placehold.co/400x500/e0e0e0/666666?text=White+T-Shirt', 'is_primary' => true],
-                    ['url' => 'https://placehold.co/400x500/e0e0e0/666666?text=White+T-Shirt+Back', 'is_primary' => false],
+                    ['url' => 'https://placehold.co/400x500/e0e0e0/666666?text=Classic+T-Shirt', 'is_primary' => true],
+                    ['url' => 'https://placehold.co/400x500/e0e0e0/666666?text=Classic+Back', 'is_primary' => false],
                     ['url' => 'https://placehold.co/400x500/e0e0e0/666666?text=White+T-Shirt+Side', 'is_primary' => false],
                 ],
             ],
@@ -34,43 +34,36 @@ class ProductSeeder extends Seeder
                 'product' => [
                     'name' => 'Blue Denim Jeans',
                     'description' => 'Classic fit denim jeans with a modern touch',
-                    'price' => 79.99,
                     'category' => 'Jeans',
-                    'size' => '32',
-                    'color' => 'Blue',
-                    'in_stock' => true,
+                ],
+                'variants' => [
+                    ['color' => 'Blue', 'sizes' => ['30', '32', '34'], 'price' => 79.99, 'stock' => 30],
                 ],
                 'images' => [
                     ['url' => 'https://placehold.co/400x500/4169e1/ffffff?text=Denim+Jeans', 'is_primary' => true],
-                    ['url' => 'https://placehold.co/400x500/4169e1/ffffff?text=Denim+Back', 'is_primary' => false],
                 ],
             ],
             [
                 'product' => [
                     'name' => 'Black Leather Jacket',
                     'description' => 'Premium leather jacket with a sleek design',
-                    'price' => 199.99,
                     'category' => 'Jackets',
-                    'size' => 'L',
-                    'color' => 'Black',
-                    'in_stock' => true,
+                ],
+                'variants' => [
+                    ['color' => 'Black', 'sizes' => ['M', 'L'], 'price' => 199.99, 'stock' => 10],
                 ],
                 'images' => [
                     ['url' => 'https://placehold.co/400x500/1a1a1a/ffffff?text=Leather+Jacket', 'is_primary' => true],
-                    ['url' => 'https://placehold.co/400x500/1a1a1a/ffffff?text=Jacket+Detail', 'is_primary' => false],
-                    ['url' => 'https://placehold.co/400x500/1a1a1a/ffffff?text=Jacket+Side', 'is_primary' => false],
-                    ['url' => 'https://placehold.co/400x500/1a1a1a/ffffff?text=Jacket+Back', 'is_primary' => false],
                 ],
             ],
             [
                 'product' => [
                     'name' => 'Summer Floral Dress',
                     'description' => 'Light and breezy dress perfect for summer',
-                    'price' => 59.99,
                     'category' => 'Dresses',
-                    'size' => 'S',
-                    'color' => 'Floral',
-                    'in_stock' => true,
+                ],
+                'variants' => [
+                    ['color' => 'Floral', 'sizes' => ['S', 'M'], 'price' => 59.99, 'stock' => 25],
                 ],
                 'images' => [
                     ['url' => 'https://placehold.co/400x500/ffb6c1/ffffff?text=Floral+Dress', 'is_primary' => true],
@@ -80,41 +73,36 @@ class ProductSeeder extends Seeder
                 'product' => [
                     'name' => 'Gray Hoodie',
                     'description' => 'Cozy hoodie for casual comfort',
-                    'price' => 49.99,
                     'category' => 'Hoodies',
-                    'size' => 'M',
-                    'color' => 'Gray',
-                    'in_stock' => true,
+                ],
+                'variants' => [
+                    ['color' => 'Gray', 'sizes' => ['S', 'M', 'L'], 'price' => 49.99, 'stock' => 35],
                 ],
                 'images' => [
                     ['url' => 'https://placehold.co/400x500/808080/ffffff?text=Gray+Hoodie', 'is_primary' => true],
-                    ['url' => 'https://placehold.co/400x500/808080/ffffff?text=Hoodie+Back', 'is_primary' => false],
                 ],
             ],
             [
                 'product' => [
                     'name' => 'Running Shorts',
                     'description' => 'Lightweight athletic shorts for active lifestyle',
-                    'price' => 34.99,
                     'category' => 'Shorts',
-                    'size' => 'M',
-                    'color' => 'Navy',
-                    'in_stock' => true,
+                ],
+                'variants' => [
+                    ['color' => 'Navy', 'sizes' => ['S', 'M', 'L'], 'price' => 34.99, 'stock' => 60],
                 ],
                 'images' => [
                     ['url' => 'https://placehold.co/400x500/000080/ffffff?text=Running+Shorts', 'is_primary' => true],
-                    ['url' => 'https://placehold.co/400x500/000080/ffffff?text=Shorts+Detail', 'is_primary' => false],
                 ],
             ],
             [
                 'product' => [
                     'name' => 'Striped Polo Shirt',
                     'description' => 'Classic polo shirt with elegant stripes',
-                    'price' => 44.99,
                     'category' => 'Shirts',
-                    'size' => 'L',
-                    'color' => 'Striped',
-                    'in_stock' => false,
+                ],
+                'variants' => [
+                    ['color' => 'Navy/White', 'sizes' => ['M', 'L', 'XL'], 'price' => 44.99, 'stock' => 0],
                 ],
                 'images' => [
                     ['url' => 'https://placehold.co/400x500/add8e6/000000?text=Polo+Shirt', 'is_primary' => true],
@@ -124,23 +112,38 @@ class ProductSeeder extends Seeder
                 'product' => [
                     'name' => 'Wool Winter Coat',
                     'description' => 'Warm wool coat for cold weather',
-                    'price' => 159.99,
                     'category' => 'Coats',
-                    'size' => 'M',
-                    'color' => 'Charcoal',
-                    'in_stock' => true,
+                ],
+                'variants' => [
+                    ['color' => 'Charcoal', 'sizes' => ['M', 'L'], 'price' => 159.99, 'stock' => 12],
                 ],
                 'images' => [
                     ['url' => 'https://placehold.co/400x500/36454f/ffffff?text=Winter+Coat', 'is_primary' => true],
-                    ['url' => 'https://placehold.co/400x500/36454f/ffffff?text=Coat+Side', 'is_primary' => false],
-                    ['url' => 'https://placehold.co/400x500/36454f/ffffff?text=Coat+Detail', 'is_primary' => false],
                 ],
             ],
         ];
 
-        foreach ($products as $data) {
+        foreach ($catalog as $data) {
             $product = Product::create($data['product']);
 
+            $minPrice = null;
+            foreach ($data['variants'] as $variantGroup) {
+                foreach ($variantGroup['sizes'] as $size) {
+                    $sku = Str::upper(Str::slug($product->name)) . '-' . Str::upper(Str::slug($variantGroup['color'])) . '-' . Str::upper(Str::slug($size));
+                    $variant = ProductVariant::create([
+                        'product_id' => $product->id,
+                        'sku' => $sku,
+                        'size' => $size,
+                        'color' => $variantGroup['color'],
+                        'price' => $variantGroup['price'],
+                        'stock' => $variantGroup['stock'],
+                        'is_available' => $variantGroup['stock'] > 0,
+                    ]);
+                    $minPrice = is_null($minPrice) ? $variant->price : min($minPrice, $variant->price);
+                }
+            }
+
+            // Save images
             foreach ($data['images'] as $index => $image) {
                 ProductImage::create([
                     'product_id' => $product->id,
@@ -149,6 +152,9 @@ class ProductSeeder extends Seeder
                     'is_primary' => $image['is_primary'],
                 ]);
             }
+
+            // Update product min price
+            $product->update(['min_variant_price' => $minPrice]);
         }
     }
 }

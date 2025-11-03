@@ -12,11 +12,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->decimal('price', 10, 2);
             $table->string('category');
-            $table->string('size')->nullable();
-            $table->string('color')->nullable();
-            $table->boolean('in_stock')->default(true);
+            $table->decimal('min_variant_price', 10, 2)->nullable();
             $table->timestamps();
         });
     }

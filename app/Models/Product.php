@@ -10,16 +10,12 @@ class Product extends Model
     protected $fillable = [
         'name',
         'description',
-        'price',
         'category',
-        'size',
-        'color',
-        'in_stock',
+        'min_variant_price',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'in_stock' => 'boolean',
+        'min_variant_price' => 'decimal:2',
     ];
 
     public function images(): HasMany
@@ -35,5 +31,10 @@ class Product extends Model
     public function getPrimaryImageUrlAttribute(): ?string
     {
         return $this->primaryImage?->image_url ?? $this->images->first()?->image_url;
+    }
+
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ProductVariant::class);
     }
 }

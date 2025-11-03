@@ -11,4 +11,15 @@ return [
     'price' => 'Price',
     'currency_format' => '$:amount',
     'currency_decimals' => 2,
+
+    // UI labels aligning with theme
+    'color' => 'Color',
+    'choose_color' => 'Choose a color',
+    'size' => 'Size',
+    'choose_size' => 'Choose a size',
+    'description' => 'Description',
+    'category' => 'Category',
+    'from' => 'From',
+    'related_products' => 'Customers also purchased',
+    'images' => 'Images',
 ];
