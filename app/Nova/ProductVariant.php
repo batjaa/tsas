@@ -3,28 +3,28 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Product extends Resource
+class ProductVariant extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\Product>
+     * @var class-string<\App\Models\ProductVariant>
      */
-    public static $model = \App\Models\Product::class;
+    public static $model = \App\Models\ProductVariant::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'sku';
 
     /**
      * The columns that should be searched.
@@ -32,7 +32,7 @@ class Product extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'category', 'description',
+        'id', 'sku', 'size', 'color',
     ];
 
     /**
@@ -45,27 +45,41 @@ class Product extends Resource
         return [
             ID::make()->sortable(),
 
-            Text::make('Name')
+            BelongsTo::make('Product')
                 ->sortable()
-                ->rules('required', 'max:255'),
-
-            Textarea::make('Description')
                 ->rules('required')
-                ->alwaysShow(),
+                ->searchable(),
 
-            Text::make('Category')
+            Text::make('SKU', 'sku')
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules('required', 'max:255')
+                ->creationRules('unique:product_variants,sku')
+                ->updateRules('unique:product_variants,sku,{{resourceId}}'),
 
-            Number::make('Min Variant Price', 'min_variant_price')
+            Text::make('Size', 'size')
                 ->sortable()
-                ->step(0.01)
-                ->readonly()
-                ->exceptOnForms(),
+                ->nullable()
+                ->rules('nullable', 'max:50'),
 
-            HasMany::make('Images', 'images', ProductImage::class),
+            Text::make('Color', 'color')
+                ->sortable()
+                ->nullable()
+                ->rules('nullable', 'max:50'),
 
-            HasMany::make('Variants', 'variants', ProductVariant::class),
+            Number::make('Price', 'price')
+                ->sortable()
+                ->rules('required', 'numeric', 'min:0')
+                ->step(0.01),
+
+            Number::make('Stock', 'stock')
+                ->sortable()
+                ->rules('required', 'integer', 'min:0')
+                ->default(0),
+
+            Boolean::make('Is Available', 'is_available')
+                ->sortable()
+                ->trueValue(true)
+                ->falseValue(false),
         ];
     }
 
