@@ -13,3 +13,7 @@ Route::get('/products', function () {
 Route::get('/products/{id}', function ($id) {
     return view('pages.products.show', ['id' => $id]);
 });
+
+Route::view('/about', 'pages.about');
+Route::view('/account', 'pages.account');
+Route::view('/cart', 'pages.cart');
