@@ -25,9 +25,9 @@ class ProductSeeder extends Seeder
                     ['color' => 'Red', 'sizes' => ['L', 'XL'], 'price' => 26.99, 'stock' => 40],
                 ],
                 'images' => [
-                    ['url' => 'https://placehold.co/400x500/e0e0e0/666666?text=Classic+T-Shirt', 'is_primary' => true],
-                    ['url' => 'https://placehold.co/400x500/e0e0e0/666666?text=Classic+Back', 'is_primary' => false],
-                    ['url' => 'https://placehold.co/400x500/e0e0e0/666666?text=White+T-Shirt+Side', 'is_primary' => false],
+                    ['url' => 'https://picsum.photos/seed/classic-tshirt-front/800/1000.webp', 'is_primary' => true],
+                    ['url' => 'https://picsum.photos/seed/classic-tshirt-back/800/1000.webp', 'is_primary' => false],
+                    ['url' => 'https://picsum.photos/seed/classic-tshirt-side/800/1000.webp', 'is_primary' => false],
                 ],
             ],
             [
@@ -40,7 +40,7 @@ class ProductSeeder extends Seeder
                     ['color' => 'Blue', 'sizes' => ['30', '32', '34'], 'price' => 79.99, 'stock' => 30],
                 ],
                 'images' => [
-                    ['url' => 'https://placehold.co/400x500/4169e1/ffffff?text=Denim+Jeans', 'is_primary' => true],
+                    ['url' => 'https://picsum.photos/seed/blue-denim-jeans/800/1000.webp', 'is_primary' => true],
                 ],
             ],
             [
@@ -53,7 +53,7 @@ class ProductSeeder extends Seeder
                     ['color' => 'Black', 'sizes' => ['M', 'L'], 'price' => 199.99, 'stock' => 10],
                 ],
                 'images' => [
-                    ['url' => 'https://placehold.co/400x500/1a1a1a/ffffff?text=Leather+Jacket', 'is_primary' => true],
+                    ['url' => 'https://picsum.photos/seed/black-leather-jacket/800/1000.webp', 'is_primary' => true],
                 ],
             ],
             [
@@ -66,7 +66,7 @@ class ProductSeeder extends Seeder
                     ['color' => 'Floral', 'sizes' => ['S', 'M'], 'price' => 59.99, 'stock' => 25],
                 ],
                 'images' => [
-                    ['url' => 'https://placehold.co/400x500/ffb6c1/ffffff?text=Floral+Dress', 'is_primary' => true],
+                    ['url' => 'https://picsum.photos/seed/summer-floral-dress/800/1000.webp', 'is_primary' => true],
                 ],
             ],
             [
@@ -79,7 +79,7 @@ class ProductSeeder extends Seeder
                     ['color' => 'Gray', 'sizes' => ['S', 'M', 'L'], 'price' => 49.99, 'stock' => 35],
                 ],
                 'images' => [
-                    ['url' => 'https://placehold.co/400x500/808080/ffffff?text=Gray+Hoodie', 'is_primary' => true],
+                    ['url' => 'https://picsum.photos/seed/gray-hoodie/800/1000.webp', 'is_primary' => true],
                 ],
             ],
             [
@@ -92,7 +92,7 @@ class ProductSeeder extends Seeder
                     ['color' => 'Navy', 'sizes' => ['S', 'M', 'L'], 'price' => 34.99, 'stock' => 60],
                 ],
                 'images' => [
-                    ['url' => 'https://placehold.co/400x500/000080/ffffff?text=Running+Shorts', 'is_primary' => true],
+                    ['url' => 'https://picsum.photos/seed/running-shorts/800/1000.webp', 'is_primary' => true],
                 ],
             ],
             [
@@ -105,7 +105,7 @@ class ProductSeeder extends Seeder
                     ['color' => 'Navy/White', 'sizes' => ['M', 'L', 'XL'], 'price' => 44.99, 'stock' => 0],
                 ],
                 'images' => [
-                    ['url' => 'https://placehold.co/400x500/add8e6/000000?text=Polo+Shirt', 'is_primary' => true],
+                    ['url' => 'https://picsum.photos/seed/striped-polo-shirt/800/1000.webp', 'is_primary' => true],
                 ],
             ],
             [
@@ -118,7 +118,7 @@ class ProductSeeder extends Seeder
                     ['color' => 'Charcoal', 'sizes' => ['M', 'L'], 'price' => 159.99, 'stock' => 12],
                 ],
                 'images' => [
-                    ['url' => 'https://placehold.co/400x500/36454f/ffffff?text=Winter+Coat', 'is_primary' => true],
+                    ['url' => 'https://picsum.photos/seed/wool-winter-coat/800/1000.webp', 'is_primary' => true],
                 ],
             ],
         ];
