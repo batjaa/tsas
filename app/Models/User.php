@@ -3,9 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 
 class User extends Authenticatable
 {
@@ -44,5 +46,23 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function sendPasswordResetNotification($token): void
+    {
+        if (app()->environment('local')) {
+            $url = url(route('password.reset', [
+                'token' => $token,
+                'email' => $this->getEmailForPasswordReset(),
+            ], false));
+
+            Log::info('Password reset link generated.', [
+                'email' => $this->email,
+                'token' => $token,
+                'url' => $url,
+            ]);
+        }
+
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

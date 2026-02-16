@@ -242,7 +242,7 @@ Track:
 11. Emails: plain-text Laravel Mailables for MVP (welcome, confirmed, failed, canceled, trial ending).
 
 ## 15. Proposed Implementation Order
-1. Install Laravel Breeze (Blade + Tailwind) and configure auth scaffolding.
+1. [x] Install Laravel Breeze (Blade + Tailwind) and configure auth scaffolding.
 2. Install and configure Cashier + Stripe env vars.
 3. Run Cashier migrations + add Stripe fields to users table.
 4. Create Stripe products/prices (test mode) and map them in `config/subscriptions.php`.
