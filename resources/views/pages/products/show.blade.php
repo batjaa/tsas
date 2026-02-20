@@ -1,281 +1,221 @@
-<?php
+<x-layouts.storefront :title="$product->name">
+    <section class="bg-white py-10 lg:py-14">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Breadcrumb -->
+            <nav class="mb-8 text-sm reveal">
+                <ol class="flex items-center gap-2 text-gray-400">
+                    <li><a href="/" class="hover:text-safety transition-colors">Нүүр</a></li>
+                    <li>/</li>
+                    <li><a href="/products" class="hover:text-safety transition-colors">Бүтээгдэхүүн</a></li>
+                    <li>/</li>
+                    <li><a href="/products?category={{ urlencode($product->category) }}" class="hover:text-safety transition-colors">{{ $product->category }}</a></li>
+                    <li>/</li>
+                    <li class="text-charcoal">{{ $product->name }}</li>
+                </ol>
+            </nav>
 
-use Livewire\Volt\Component;
-use App\Models\Product;
+            <div class="lg:grid lg:grid-cols-2 lg:gap-12"
+                 x-data="{
+                     selectedColor: null,
+                     selectedSize: null,
+                     variants: {{ $product->variants->map(fn($v) => [
+                         'color' => $v->color,
+                         'size' => $v->size,
+                         'price' => $v->price,
+                         'is_available' => $v->is_available,
+                         'stock' => $v->stock,
+                         'hex' => \App\Helpers\ColorMap::hex($v->color),
+                     ])->toJson() }},
+                     colors: {{ $product->variants->pluck('color')->unique()->values()->toJson() }},
+                     sizes: {{ $product->variants->pluck('size')->unique()->values()->toJson() }},
+                     minPrice: {{ $product->min_variant_price ?? $product->variants->min('price') ?? 0 }},
 
-new class extends Component {
-    public Product $product;
+                     get selectedVariant() {
+                         if (!this.selectedColor || !this.selectedSize) return null;
+                         return this.variants.find(v =>
+                             v.color === this.selectedColor &&
+                             v.size === this.selectedSize
+                         );
+                     },
 
-    public function mount($id): void
-    {
-        $this->product = Product::with(['images', 'variants'])->findOrFail($id);
-    }
+                     get displayPrice() {
+                         if (this.selectedVariant) return this.selectedVariant.price;
+                         return this.minPrice;
+                     },
 
-    public function getMinPriceProperty(): ?float
-    {
-        return $this->product->min_variant_price ?? $this->product->variants->min('price');
-    }
+                     get canBuy() {
+                         const v = this.selectedVariant;
+                         return v && v.is_available && v.stock > 0;
+                     },
 
-    public function getRelatedProductsProperty()
-    {
-        return Product::with(['images', 'variants'])
-            ->where('category', $this->product->category)
-            ->where('id', '!=', $this->product->id)
-            ->take(4)
-            ->get();
-    }
-}; ?>
+                     colorHex(color) {
+                         const v = this.variants.find(v => v.color === color);
+                         return v ? v.hex : '#CCCCCC';
+                     },
 
-<x-layouts.app>
-    @volt('products.show')
-        <div class="bg-white">
-            <main class="mx-auto mt-8 max-w-2xl px-4 pb-16 sm:px-6 sm:pb-24 lg:max-w-7xl lg:px-8">
-
-                <div class="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8"
-                     x-data="{
-                         selectedColor: null,
-                         selectedSize: null,
-                         variants: {{ $product->variants->map(fn($v) => [
-                             'color' => $v->color,
-                             'size' => $v->size,
-                             'price' => $v->price,
-                             'is_available' => $v->is_available,
-                             'stock' => $v->stock
-                         ])->toJson() }},
-                         colors: {{ $product->variants->pluck('color')->filter()->unique()->values()->toJson() }},
-                         sizes: {{ $product->variants->pluck('size')->filter()->unique()->values()->toJson() }},
-                         minPrice: {{ $this->minPrice ?? 'null' }},
-
-                         get selectedVariant() {
-                             if (!this.selectedColor || !this.selectedSize) return null;
-                             return this.variants.find(v =>
-                                 v.color === this.selectedColor &&
-                                 v.size === this.selectedSize
-                             );
-                         },
-
-                         get displayPrice() {
-                             if (this.selectedVariant) {
-                                 return this.selectedVariant.price;
-                             }
-                             return this.minPrice;
-                         },
-
-                         get canBuy() {
-                             const v = this.selectedVariant;
-                             return v && v.is_available && v.stock > 0;
-                         },
-
-                         isColorDisabled(color) {
-                             if (!this.selectedSize) {
-                                 return !this.variants.some(v =>
-                                     v.color === color && v.is_available && v.stock > 0
-                                 );
-                             }
-                             return !this.variants.some(v =>
-                                 v.color === color &&
-                                 v.size === this.selectedSize &&
-                                 v.is_available &&
-                                 v.stock > 0
-                             );
-                         },
-
-                         isSizeDisabled(size) {
-                             if (!this.selectedColor) {
-                                 return !this.variants.some(v =>
-                                     v.size === size && v.is_available && v.stock > 0
-                                 );
-                             }
-                             return !this.variants.some(v =>
-                                 v.size === size &&
-                                 v.color === this.selectedColor &&
-                                 v.is_available &&
-                                 v.stock > 0
-                             );
-                         },
-
-                         toggleColor(color) {
-                             if (this.selectedColor === color) {
-                                 this.selectedColor = null;
-                             } else {
-                                 this.selectedColor = color;
-                             }
-                         },
-
-                         toggleSize(size) {
-                             if (this.selectedSize === size) {
-                                 this.selectedSize = null;
-                             } else {
-                                 this.selectedSize = size;
-                             }
+                     isColorDisabled(color) {
+                         if (!this.selectedSize) {
+                             return !this.variants.some(v => v.color === color && v.is_available && v.stock > 0);
                          }
-                     }">
-                    <div class="lg:col-span-5 lg:col-start-8">
-                        <div class="flex justify-between">
-                            <h1 class="text-xl font-medium text-gray-900">{{ $product->name }}</h1>
-                            <p class="text-xl font-medium text-gray-900">
-                                <span x-show="displayPrice !== null" x-text="'{{ __('products.currency_format', ['amount' => '']) }}'.replace('', Number(displayPrice).toFixed({{ (int) __('products.currency_decimals') }}))"></span>
-                                <span x-show="displayPrice === null">--</span>
-                            </p>
+                         return !this.variants.some(v => v.color === color && v.size === this.selectedSize && v.is_available && v.stock > 0);
+                     },
+
+                     isSizeDisabled(size) {
+                         if (!this.selectedColor) {
+                             return !this.variants.some(v => v.size === size && v.is_available && v.stock > 0);
+                         }
+                         return !this.variants.some(v => v.size === size && v.color === this.selectedColor && v.is_available && v.stock > 0);
+                     },
+
+                     toggleColor(color) {
+                         this.selectedColor = this.selectedColor === color ? null : color;
+                     },
+
+                     toggleSize(size) {
+                         this.selectedSize = this.selectedSize === size ? null : size;
+                     }
+                 }">
+
+                <!-- Image gallery -->
+                <div class="reveal">
+                    @php
+                        $images = $product->images->sortBy('order');
+                        $primaryImage = $images->where('is_primary', true)->first() ?? $images->first();
+                        $otherImages = $images->where('id', '!=', optional($primaryImage)->id)->take(3);
+                    @endphp
+
+                    @if($primaryImage)
+                        <img src="{{ $primaryImage->image_url }}" alt="{{ $product->name }}" class="w-full aspect-[3/4] object-cover" />
+                    @else
+                        <div class="w-full aspect-[3/4] bg-gray-100 flex items-center justify-center">
+                            <span class="text-gray-400 font-oswald">Зураггүй</span>
+                        </div>
+                    @endif
+
+                    @if($otherImages->isNotEmpty())
+                        <div class="grid grid-cols-3 gap-3 mt-3">
+                            @foreach($otherImages as $image)
+                                <img src="{{ $image->image_url }}" alt="{{ $product->name }}" class="w-full aspect-square object-cover cursor-pointer hover:opacity-80 transition-opacity" />
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Product info -->
+                <div class="mt-8 lg:mt-0 reveal">
+                    @if($product->badge)
+                        <span class="inline-block bg-safety text-white text-xs font-oswald font-semibold uppercase px-3 py-1 tracking-wider mb-3">{{ $product->badge }}</span>
+                    @endif
+
+                    <p class="font-mono text-xs text-gray-400 mb-1">{{ $product->variants->first()?->sku }}</p>
+
+                    <h1 class="font-oswald text-2xl sm:text-3xl font-bold text-charcoal">{{ $product->name }}</h1>
+
+                    <p class="mt-2 text-sm text-gray-500">{{ $product->category }}</p>
+
+                    <!-- Price -->
+                    <div class="mt-4">
+                        <span class="font-oswald text-3xl font-bold text-charcoal" x-text="'₮' + Number(displayPrice).toLocaleString()"></span>
+                    </div>
+
+                    <!-- Color picker -->
+                    <div class="mt-6">
+                        <h2 class="font-oswald text-sm font-semibold uppercase tracking-wider text-charcoal mb-3">Өнгө</h2>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <template x-for="color in colors" :key="color">
+                                <button
+                                    @click="toggleColor(color)"
+                                    :disabled="isColorDisabled(color)"
+                                    :class="{
+                                        'ring-2 ring-offset-2 ring-safety': selectedColor === color,
+                                        'opacity-30 cursor-not-allowed': isColorDisabled(color)
+                                    }"
+                                    class="w-8 h-8 rounded-full border border-gray-200 transition-all focus:outline-none"
+                                    :style="'background-color: ' + colorHex(color)"
+                                    :title="color">
+                                </button>
+                            </template>
+                        </div>
+                        <p x-show="selectedColor" x-text="selectedColor" class="text-xs text-gray-500 mt-2"></p>
+                    </div>
+
+                    <!-- Size picker -->
+                    <div class="mt-6">
+                        <h2 class="font-oswald text-sm font-semibold uppercase tracking-wider text-charcoal mb-3">Размер</h2>
+                        <div class="flex flex-wrap gap-2">
+                            <template x-for="size in sizes" :key="size">
+                                <button
+                                    @click="toggleSize(size)"
+                                    :disabled="isSizeDisabled(size)"
+                                    :class="{
+                                        'bg-charcoal text-white border-charcoal': selectedSize === size,
+                                        'bg-white text-charcoal border-gray-300 hover:border-charcoal': selectedSize !== size && !isSizeDisabled(size),
+                                        'bg-gray-100 text-gray-300 border-gray-200 cursor-not-allowed': isSizeDisabled(size)
+                                    }"
+                                    class="min-w-[3rem] px-3 py-2 border text-sm font-oswald font-medium uppercase transition-colors focus:outline-none"
+                                    x-text="size">
+                                </button>
+                            </template>
                         </div>
                     </div>
 
-                    <!-- Image gallery -->
-                    <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
-                        <h2 class="sr-only">{{ __('products.images') }}</h2>
+                    <!-- Add to cart -->
+                    <button
+                        type="button"
+                        :disabled="!canBuy"
+                        class="mt-8 w-full py-3 px-6 font-oswald font-semibold text-base uppercase tracking-wider transition-colors focus:outline-none disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed bg-safety text-white hover:bg-orange-700">
+                        <span x-show="!selectedColor || !selectedSize">Өнгө, размер сонгоно уу</span>
+                        <span x-show="selectedColor && selectedSize && canBuy">Сагсанд нэмэх</span>
+                        <span x-show="selectedColor && selectedSize && !canBuy">Дууссан</span>
+                    </button>
 
-                        <div class="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-3 lg:gap-8">
-                            @if($product->images->isNotEmpty())
-                                @php
-                                    $images = $product->images->sortBy('order');
-                                    $primaryImage = $images->where('is_primary', true)->first() ?? $images->first();
-                                    $otherImages = $images->where('id', '!=', $primaryImage->id)->take(2);
-                                @endphp
+                    <p x-show="selectedVariant && !canBuy" x-cloak class="mt-2 text-sm text-red-600">Уучлаарай, энэ хувилбар дууссан байна.</p>
 
-                                <img src="{{ $primaryImage->image_url }}" alt="{{ $product->name }}" class="rounded-lg lg:col-span-2 lg:row-span-2" />
-                                @foreach($otherImages as $image)
-                                    <img src="{{ $image->image_url }}" alt="{{ $product->name }}" class="hidden rounded-lg lg:block" />
-                                @endforeach
-                            @else
-                                <div class="rounded-lg lg:col-span-2 lg:row-span-2 flex items-center justify-center bg-gray-100 h-96">
-                                    <span class="text-gray-400">{{ __('products.no_image') }}</span>
-                                </div>
-                            @endif
-                        </div>
+                    <!-- Description -->
+                    <div class="mt-8 border-t border-gray-200 pt-6">
+                        <h2 class="font-oswald text-sm font-semibold uppercase tracking-wider text-charcoal mb-3">Тайлбар</h2>
+                        <p class="text-gray-600 leading-relaxed">{{ $product->description }}</p>
                     </div>
 
-                    <div class="mt-8 lg:col-span-5">
-                        <form>
-                            <!-- Color picker -->
-                            <div>
-                                <h2 class="text-sm font-medium text-gray-900">{{ __('products.color') }}</h2>
-
-                                <fieldset aria-label="{{ __('products.choose_color') }}" class="mt-2">
-                                    <div class="flex items-center gap-x-3">
-                                        <template x-for="(color, index) in colors" :key="color">
-                                            <div class="flex rounded-full outline -outline-offset-1 outline-black/10 has-disabled:opacity-25">
-                                                <input :id="'color_' + index"
-                                                       type="radio"
-                                                       name="color"
-                                                       :value="color"
-                                                       :aria-label="color"
-                                                       :checked="selectedColor === color"
-                                                       :disabled="isColorDisabled(color)"
-                                                       x-model="selectedColor"
-                                                       @click="toggleColor(color)"
-                                                       :class="{
-                                                           'bg-gray-900 checked:outline-gray-900': color === 'Black',
-                                                           'bg-white border border-gray-300 checked:outline-gray-300': color === 'White',
-                                                           'bg-blue-600 checked:outline-blue-600': color === 'Blue',
-                                                           'bg-red-600 checked:outline-red-600': color === 'Red',
-                                                           'bg-blue-900 checked:outline-blue-900': color === 'Navy',
-                                                           'bg-gray-500 checked:outline-gray-500': color === 'Gray',
-                                                           'bg-gray-700 checked:outline-gray-700': color === 'Charcoal',
-                                                           'bg-pink-400 checked:outline-pink-400': color === 'Floral',
-                                                           'bg-gradient-to-r from-blue-900 to-white border border-gray-300 checked:outline-gray-300': color === 'Navy/White',
-                                                           'bg-gray-200 checked:outline-gray-200': !['Black', 'White', 'Blue', 'Red', 'Navy', 'Gray', 'Charcoal', 'Floral', 'Navy/White'].includes(color)
-                                                       }"
-                                                       class="size-8 appearance-none rounded-full forced-color-adjust-none checked:outline-2 checked:outline-offset-2 focus-visible:outline-3 focus-visible:outline-offset-3 disabled:cursor-not-allowed" />
-                                            </div>
-                                        </template>
-                                    </div>
-                                </fieldset>
-                            </div>
-
-                            <!-- Size picker -->
-                            <div class="mt-8">
-                                <div class="flex items-center justify-between">
-                                    <h2 class="text-sm font-medium text-gray-900">{{ __('products.size') }}</h2>
-                                </div>
-                                <fieldset aria-label="{{ __('products.choose_size') }}" class="mt-2">
-                                    <div class="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                                        <template x-for="(size, index) in sizes" :key="size">
-                                            <label :for="'size_' + index"
-                                                   class="group relative flex items-center justify-center rounded-md border border-gray-300 bg-white p-3 has-checked:border-indigo-600 has-checked:bg-indigo-600 has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-indigo-600 has-disabled:border-gray-400 has-disabled:bg-gray-200 has-disabled:opacity-25">
-                                                <input :id="'size_' + index"
-                                                       type="radio"
-                                                       name="size"
-                                                       :value="size"
-                                                       :aria-label="size"
-                                                       :checked="selectedSize === size"
-                                                       :disabled="isSizeDisabled(size)"
-                                                       @click="toggleSize(size)"
-                                                       class="peer absolute inset-0 appearance-none focus:outline-none disabled:cursor-not-allowed" />
-                                                <span class="text-sm font-medium text-gray-900 uppercase group-has-checked:text-white" x-text="size"></span>
-                                            </label>
-                                        </template>
-                                    </div>
-                                </fieldset>
-                            </div>
-
-                            <button type="button"
-                                    class="mt-8 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden disabled:bg-gray-300 disabled:cursor-not-allowed"
-                                    :disabled="!canBuy">
-                                {{ __('products.add_to_cart') }}
-                            </button>
-                            <p x-show="selectedVariant && !canBuy"
-                               x-cloak
-                               class="mt-2 text-sm text-red-600">{{ __('products.out_of_stock') }}</p>
-                        </form>
-
-                        <!-- Product details -->
-                        <div class="mt-10">
-                            <h2 class="text-sm font-medium text-gray-900">{{ __('products.description') }}</h2>
-
-                            <div class="mt-4 space-y-4 text-sm/6 text-gray-500">
-                                <p>{{ $product->description }}</p>
-                            </div>
-                        </div>
-
-                        <div class="mt-8 border-t border-gray-200 pt-8">
-                            <h2 class="text-sm font-medium text-gray-900">{{ __('products.category') }}</h2>
-
-                            <div class="mt-4 text-sm text-gray-500">
-                                {{ $product->category }}
-                            </div>
+                    <!-- Phone CTA inline -->
+                    <div class="mt-6 bg-concrete p-4 flex items-center gap-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-safety shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                        </svg>
+                        <div>
+                            <p class="text-sm text-gray-500">Захиалга өгөх, лавлах</p>
+                            <a href="tel:+97677001122" class="font-mono font-semibold text-charcoal hover:text-safety transition-colors">7700-1122</a>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Related products -->
-                <section aria-labelledby="related-heading" class="mt-16 sm:mt-24">
-                    <h2 id="related-heading" class="text-lg font-medium text-gray-900">{{ __('products.related_products') }}</h2>
+            <!-- Related products -->
+            @if($relatedProducts->isNotEmpty())
+                <div class="mt-16 border-t border-gray-200 pt-12">
+                    <x-storefront.section-heading title="Төстэй бүтээгдэхүүн" />
 
-                    <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-                        @forelse($this->relatedProducts as $rel)
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        @foreach($relatedProducts as $rel)
                             @php
-                                $relMin = $rel->min_variant_price ?? $rel->variants->min('price');
+                                $relColors = $rel->variants->pluck('color')->unique()->map(fn($c) => \App\Helpers\ColorMap::hex($c))->values()->all();
                             @endphp
-                            <a href="/products/{{ $rel->id }}" class="group relative block">
-                                @if($rel->primary_image_url)
-                                    <img src="{{ $rel->primary_image_url }}" alt="{{ $rel->name }}" class="aspect-square w-full rounded-md object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-                                @else
-                                    <div class="aspect-square w-full rounded-md bg-gray-100 flex items-center justify-center lg:aspect-auto lg:h-80">
-                                        <span class="text-gray-400">{{ __('products.no_image') }}</span>
-                                    </div>
-                                @endif
-                                <div class="mt-4 flex justify-between">
-                                    <div>
-                                        <h3 class="text-sm text-gray-700">
-                                            <span aria-hidden="true" class="absolute inset-0"></span>
-                                            {{ $rel->name }}
-                                        </h3>
-                                        <p class="mt-1 text-sm text-gray-500">{{ $rel->category }}</p>
-                                    </div>
-                                    <p class="text-sm font-medium text-gray-900">
-                                        @if($relMin)
-                                            {{ __('products.currency_format', ['amount' => number_format($relMin, (int) __('products.currency_decimals'))]) }}
-                                        @else
-                                            --
-                                        @endif
-                                    </p>
-                                </div>
-                            </a>
-                        @empty
-                        @endforelse
+                            <x-storefront.product-card
+                                :name="$rel->name"
+                                :sku="$rel->variants->first()?->sku ?? ''"
+                                :image="$rel->primary_image_url"
+                                :price="$rel->min_variant_price ?? $rel->variants->min('price') ?? 0"
+                                :colors="$relColors"
+                                :badge="$rel->badge"
+                                :href="'/products/' . $rel->id"
+                            />
+                        @endforeach
                     </div>
-                </section>
-            </main>
+                </div>
+            @endif
         </div>
-    @endvolt
-</x-layouts.app>
+    </section>
+
+    <!-- Bottom padding for mobile bottom bar -->
+    <div class="h-14 lg:hidden"></div>
+</x-layouts.storefront>
