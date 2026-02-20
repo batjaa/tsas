@@ -12,10 +12,13 @@ class Product extends Model
         'description',
         'category',
         'min_variant_price',
+        'is_featured',
+        'badge',
     ];
 
     protected $casts = [
         'min_variant_price' => 'decimal:2',
+        'is_featured' => 'boolean',
     ];
 
     public function images(): HasMany

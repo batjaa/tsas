@@ -11,12 +11,7 @@
             <x-storefront.section-heading title="Мэргэжлээр" />
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach([
-                    ['title' => 'Тогооч', 'subtitle' => 'Гал тогооны хувцас', 'count' => 3, 'image' => 'https://picsum.photos/seed/cat-chef/400/300.webp', 'icon' => '🍳'],
-                    ['title' => 'Эмнэлэг', 'subtitle' => 'Эмнэлгийн хувцас', 'count' => 2, 'image' => 'https://picsum.photos/seed/cat-medical/400/300.webp', 'icon' => '🏥'],
-                    ['title' => 'Нярав / Үйлчилгээ', 'subtitle' => 'Үйлчилгээний хувцас', 'count' => 2, 'image' => 'https://picsum.photos/seed/cat-service/400/300.webp', 'icon' => '🧹'],
-                    ['title' => 'Нарийн боовчин', 'subtitle' => 'Боовны цехийн хувцас', 'count' => 1, 'image' => 'https://picsum.photos/seed/cat-baker/400/300.webp', 'icon' => '🧁'],
-                ] as $cat)
+                @foreach($categories as $cat)
                     <x-storefront.profession-card
                         :title="$cat['title']"
                         :subtitle="$cat['subtitle']"
@@ -39,12 +34,7 @@
             <x-storefront.section-heading title="Онцлох бүтээгдэхүүн" />
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                @foreach([
-                    ['name' => 'Тогоочийн хантааз — Классик цагаан', 'sku' => 'TC-001', 'image' => 'https://picsum.photos/seed/prod-chef-jacket/400/530.webp', 'price' => 65000, 'colors' => ['#FFFFFF', '#2D2926'], 'badge' => 'Шинэ'],
-                    ['name' => 'Эмчийн халад — Цэнхэр', 'sku' => 'EM-001', 'image' => 'https://picsum.photos/seed/prod-med-coat/400/530.webp', 'price' => 55000, 'colors' => ['#4A6FA5', '#FFFFFF'], 'badge' => null],
-                    ['name' => 'Зөөгчийн цамц — Хар', 'sku' => 'ZC-001', 'image' => 'https://picsum.photos/seed/prod-waiter-shirt/400/530.webp', 'price' => 45000, 'colors' => ['#2D2926', '#FFFFFF'], 'badge' => 'Хит'],
-                    ['name' => 'Нарийн боовчны фартук', 'sku' => 'NB-001', 'image' => 'https://picsum.photos/seed/prod-baker-apron/400/530.webp', 'price' => 35000, 'colors' => ['#E8651A', '#2D2926'], 'badge' => null],
-                ] as $prod)
+                @foreach($featuredProducts as $prod)
                     <x-storefront.product-card
                         :name="$prod['name']"
                         :sku="$prod['sku']"
@@ -52,7 +42,7 @@
                         :price="$prod['price']"
                         :colors="$prod['colors']"
                         :badge="$prod['badge']"
-                        href="/products"
+                        :href="'/products/' . $prod['id']"
                     />
                 @endforeach
             </div>
