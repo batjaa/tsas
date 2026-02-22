@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -66,6 +67,34 @@ class ProductImage extends Resource
 
             Boolean::make('Is Primary')
                 ->sortable(),
+
+            Select::make('Hero Position', 'hero_position')
+                ->options([
+                    1 => 'Байрлал 1 (зүүн дээд, том)',
+                    2 => 'Байрлал 2 (баруун дээд)',
+                    3 => 'Байрлал 3 (зүүн доод)',
+                    4 => 'Байрлал 4 (баруун доод)',
+                ])
+                ->displayUsingLabels()
+                ->nullable()
+                ->rules(
+                    'nullable',
+                    'integer',
+                    'in:1,2,3,4',
+                    function ($attribute, $value, $fail) {
+                        if ($value === null) {
+                            return;
+                        }
+                        $existing = \App\Models\ProductImage::where('hero_position', $value)
+                            ->where('id', '!=', $this->resource->id ?? 0)
+                            ->first();
+                        if ($existing) {
+                            $productName = $existing->product?->name ?? "#{$existing->product_id}";
+                            $fail("Hero байрлал {$value} аль хэдийн \"{$productName}\" бүтээгдэхүүний зуранд оноогдсон байна.");
+                        }
+                    }
+                )
+                ->help('Нүүр хуудасны hero зургийн байрлал сонгоно уу'),
 
             Code::make('Variants')
                 ->json()

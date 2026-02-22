@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\ColorMap;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -54,15 +55,14 @@ class HomeController extends Controller
                 ];
             });
 
-        // Hero collage: pick 4 featured products with images
-        $heroImages = Product::with('primaryImage')
-            ->where('is_featured', true)
-            ->whereHas('primaryImage')
-            ->take(4)
+        // Hero collage: images explicitly assigned to hero positions 1–4
+        $heroImages = ProductImage::with('product')
+            ->whereNotNull('hero_position')
+            ->orderBy('hero_position')
             ->get()
-            ->map(fn ($p) => [
-                'url' => $p->primaryImage->url('large'),
-                'alt' => $p->name,
+            ->map(fn ($img) => [
+                'url' => $img->url('large'),
+                'alt' => $img->product?->name ?? '',
             ])
             ->values()
             ->all();

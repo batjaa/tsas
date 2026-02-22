@@ -18,6 +18,7 @@ class ProductImage extends Model
         'variants',
         'order',
         'is_primary',
+        'hero_position',
     ];
 
     protected $casts = [
@@ -25,6 +26,7 @@ class ProductImage extends Model
         'is_primary' => 'boolean',
         'order' => 'integer',
         'size' => 'integer',
+        'hero_position' => 'integer',
     ];
 
     public function product(): BelongsTo
