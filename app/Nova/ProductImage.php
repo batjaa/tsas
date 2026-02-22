@@ -2,45 +2,28 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Number;
+use App\Nova\Actions\SetPrimaryImage;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Code;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ProductImage extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\ProductImage>
-     */
     public static $model = \App\Models\ProductImage::class;
 
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'id';
+    public static $title = 'original_filename';
 
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
     public static $search = [
-        'id',
+        'id', 'original_filename',
     ];
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array<int, \Laravel\Nova\Fields\Field>
-     */
+    public static $displayInNavigation = false;
+
     public function fields(NovaRequest $request): array
     {
         return [
@@ -50,13 +33,31 @@ class ProductImage extends Resource
                 ->sortable()
                 ->rules('required'),
 
-            Text::make('Image URL')
-                ->sortable()
-                ->rules('required', 'url')
-                ->displayUsing(function ($value) {
-                    return $value ? '<img src="' . $value . '" class="h-8 w-8 object-cover rounded">' : '';
+            Image::make('Thumbnail', 'path')
+                ->exceptOnForms()
+                ->thumbnail(function ($value, $disk) {
+                    return $this->resource->url('thumbnail');
                 })
-                ->asHtml(),
+                ->preview(function ($value, $disk) {
+                    return $this->resource->url('medium');
+                }),
+
+            Text::make('Original Filename')
+                ->exceptOnForms()
+                ->hideFromIndex(),
+
+            Text::make('Mime Type')
+                ->exceptOnForms()
+                ->hideFromIndex(),
+
+            Text::make('Size', function () {
+                if (! $this->resource->size) {
+                    return null;
+                }
+                return number_format($this->resource->size / 1024, 1) . ' KB';
+            })
+                ->exceptOnForms()
+                ->hideFromIndex(),
 
             Number::make('Order')
                 ->sortable()
@@ -65,46 +66,33 @@ class ProductImage extends Resource
 
             Boolean::make('Is Primary')
                 ->sortable(),
+
+            Code::make('Variants')
+                ->json()
+                ->exceptOnForms()
+                ->hideFromIndex(),
         ];
     }
 
-    /**
-     * Get the cards available for the resource.
-     *
-     * @return array<int, \Laravel\Nova\Card>
-     */
     public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array<int, \Laravel\Nova\Filters\Filter>
-     */
     public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array<int, \Laravel\Nova\Lenses\Lens>
-     */
     public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array<int, \Laravel\Nova\Actions\Action>
-     */
     public function actions(NovaRequest $request): array
     {
-        return [];
+        return [
+            new SetPrimaryImage,
+        ];
     }
 }

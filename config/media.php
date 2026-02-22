@@ -2,7 +2,7 @@
 
 return [
 
-    'disk' => env('MEDIA_DISK', 'r2'),
+    'disk' => env('MEDIA_DISK', 'public'),
 
     'format' => 'webp',
 

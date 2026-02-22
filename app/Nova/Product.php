@@ -2,8 +2,10 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\UploadProductImages;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Number;
@@ -44,6 +46,17 @@ class Product extends Resource
     {
         return [
             ID::make()->sortable(),
+
+            Image::make('Primary Image', function () {
+                    return $this->primaryImage?->url('medium');
+                })
+                ->exceptOnForms()
+                ->thumbnail(function ($value) {
+                    return $this->resource->primaryImage?->url('thumbnail');
+                })
+                ->preview(function ($value) {
+                    return $this->resource->primaryImage?->url('medium');
+                }),
 
             Text::make('Name')
                 ->sortable()
@@ -106,6 +119,8 @@ class Product extends Resource
      */
     public function actions(NovaRequest $request): array
     {
-        return [];
+        return [
+            new UploadProductImages,
+        ];
     }
 }
