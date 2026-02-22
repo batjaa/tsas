@@ -13,7 +13,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         $catalog = [
-            // --- Тогооч (Chef) ---
+            // 1. Тогоочийн хантааз — Классик цагаан
             [
                 'product' => [
                     'name' => 'Тогоочийн хантааз — Классик цагаан',
@@ -24,46 +24,119 @@ class ProductSeeder extends Seeder
                 ],
                 'variants' => [
                     ['color' => 'Цагаан', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 65000, 'stock' => 40],
-                    ['color' => 'Хар', 'sizes' => ['S', 'M', 'L', 'XL'], 'price' => 65000, 'stock' => 30],
                 ],
                 'images' => [
-                    ['url' => 'https://picsum.photos/seed/chef-jacket-white/800/1000.webp', 'is_primary' => true],
-                    ['url' => 'https://picsum.photos/seed/chef-jacket-back/800/1000.webp', 'is_primary' => false],
+                    ['filename' => 'px-2', 'is_primary' => true],
+                    ['filename' => 'px-4', 'is_primary' => false],
+                    ['filename' => 'px-5', 'is_primary' => false],
+                    ['filename' => 'px-6', 'is_primary' => false],
                 ],
             ],
+            // 2. Тогоочийн малгай — Бандана
             [
                 'product' => [
-                    'name' => 'Тогоочийн өмд — Зурвас',
-                    'description' => 'Уян хатан бүсэлхийтэй, тав тухтай тогоочийн өмд. Зурвас хээтэй сонгодог загвар.',
+                    'name' => 'Тогоочийн малгай — Бандана',
+                    'description' => 'Хөнгөн, агааржуулалттай бандана загварын тогоочийн малгай. Гал тогооны орчинд тохиромжтой.',
                     'category' => 'Тогооч',
                     'is_featured' => false,
                     'badge' => null,
                 ],
                 'variants' => [
-                    ['color' => 'Хар зурвас', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 45000, 'stock' => 50],
+                    ['color' => 'Хар', 'sizes' => ['M', 'L'], 'price' => 15000, 'stock' => 60],
                 ],
-                'images' => [
-                    ['url' => 'https://picsum.photos/seed/chef-pants-stripe/800/1000.webp', 'is_primary' => true],
-                ],
+                'images' => [],
             ],
+            // 3. Тогоочийн өмд — Хар
             [
                 'product' => [
-                    'name' => 'Тогоочийн малгай — Пилотка',
-                    'description' => 'Хөнгөн, агааржуулалттай пилотка загварын тогоочийн малгай.',
+                    'name' => 'Тогоочийн өмд — Хар',
+                    'description' => 'Уян хатан бүсэлхийтэй, тав тухтай тогоочийн өмд. Хар өнгөтэй сонгодог загвар.',
                     'category' => 'Тогооч',
                     'is_featured' => false,
                     'badge' => null,
                 ],
                 'variants' => [
-                    ['color' => 'Цагаан', 'sizes' => ['M', 'L'], 'price' => 15000, 'stock' => 60],
-                    ['color' => 'Хар', 'sizes' => ['M', 'L'], 'price' => 15000, 'stock' => 40],
+                    ['color' => 'Хар', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 45000, 'stock' => 50],
                 ],
                 'images' => [
-                    ['url' => 'https://picsum.photos/seed/chef-hat-pilotka/800/1000.webp', 'is_primary' => true],
+                    ['filename' => 'px-4', 'is_primary' => true],
                 ],
             ],
-
-            // --- Эмнэлэг (Medical) ---
+            // 4. Тогоочийн хантааз — Зурвас хээтэй
+            [
+                'product' => [
+                    'name' => 'Тогоочийн хантааз — Зурвас хээтэй',
+                    'description' => 'Зурвас хээ чимэглэлтэй тогоочийн хантааз. Давхар товчтой, загварлаг дизайн.',
+                    'category' => 'Тогооч',
+                    'is_featured' => true,
+                    'badge' => null,
+                ],
+                'variants' => [
+                    ['color' => 'Цагаан', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 65000, 'stock' => 35],
+                ],
+                'images' => [
+                    ['filename' => 'px-22', 'is_primary' => true],
+                ],
+            ],
+            // 5. Тогоочийн фартук — Зурвас хээ
+            [
+                'product' => [
+                    'name' => 'Тогоочийн фартук — Зурвас хээ',
+                    'description' => 'Зурвас хээтэй тогоочийн фартук. Бүсэлхийн уртатай, гал тогооны орчинд тохиромжтой.',
+                    'category' => 'Тогооч',
+                    'is_featured' => false,
+                    'badge' => null,
+                ],
+                'variants' => [
+                    ['color' => 'Зурвас', 'sizes' => ['M', 'L'], 'price' => 35000, 'stock' => 40],
+                ],
+                'images' => [
+                    ['filename' => 'px-12', 'is_primary' => true],
+                    ['filename' => 'px-18', 'is_primary' => false],
+                ],
+            ],
+            // 6. Тогоочийн өмд — Зурвас хээ
+            [
+                'product' => [
+                    'name' => 'Тогоочийн өмд — Зурвас хээ',
+                    'description' => 'Уян хатан бүсэлхийтэй, зурвас хээтэй тогоочийн өмд.',
+                    'category' => 'Тогооч',
+                    'is_featured' => false,
+                    'badge' => null,
+                ],
+                'variants' => [
+                    ['color' => 'Зурвас', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 45000, 'stock' => 45],
+                ],
+                'images' => [
+                    ['filename' => 'px-14', 'is_primary' => true],
+                ],
+            ],
+            // 7. Нярав фартук — Табард
+            [
+                'product' => [
+                    'name' => 'Нярав фартук — Табард',
+                    'description' => 'Табард загварын нярав фартук. Үйлчилгээ, цэвэрлэгээний ажилд тохиромжтой. Олон өнгөтэй.',
+                    'category' => 'Нярав / Үйлчилгээ',
+                    'is_featured' => true,
+                    'badge' => 'Хит',
+                ],
+                'variants' => [
+                    ['color' => 'Ягаан', 'sizes' => ['M', 'L', 'XL'], 'price' => 25000, 'stock' => 30],
+                    ['color' => 'Цэнхэр', 'sizes' => ['M', 'L', 'XL'], 'price' => 25000, 'stock' => 30],
+                    ['color' => 'Нил ягаан', 'sizes' => ['M', 'L', 'XL'], 'price' => 25000, 'stock' => 25],
+                    ['color' => 'Улаан', 'sizes' => ['M', 'L', 'XL'], 'price' => 25000, 'stock' => 25],
+                ],
+                'images' => [
+                    ['filename' => 'px-10', 'is_primary' => true],
+                    ['filename' => 'px-11', 'is_primary' => false],
+                    ['filename' => 'px-26', 'is_primary' => false],
+                    ['filename' => 'px-28', 'is_primary' => false],
+                    ['filename' => 'px-29', 'is_primary' => false],
+                    ['filename' => 'px-30', 'is_primary' => false],
+                    ['filename' => 'px-32', 'is_primary' => false],
+                ],
+            ],
+            // 8. Эмчийн халад — Цэнхэр
             [
                 'product' => [
                     'name' => 'Эмчийн халад — Цэнхэр',
@@ -74,147 +147,113 @@ class ProductSeeder extends Seeder
                 ],
                 'variants' => [
                     ['color' => 'Цэнхэр', 'sizes' => ['S', 'M', 'L', 'XL', '2XL', '3XL'], 'price' => 55000, 'stock' => 35],
-                    ['color' => 'Цагаан', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 55000, 'stock' => 25],
                 ],
                 'images' => [
-                    ['url' => 'https://picsum.photos/seed/medical-coat-blue/800/1000.webp', 'is_primary' => true],
-                    ['url' => 'https://picsum.photos/seed/medical-coat-back/800/1000.webp', 'is_primary' => false],
+                    ['filename' => 'px-34', 'is_primary' => true],
+                    ['filename' => 'px-36', 'is_primary' => false],
+                    ['filename' => 'px-38', 'is_primary' => false],
+                    ['filename' => 'px-40', 'is_primary' => false],
+                    ['filename' => 'px-64', 'is_primary' => false],
                 ],
             ],
+            // 9. Сувилагчийн костюм — Скраб хөх
             [
                 'product' => [
-                    'name' => 'Сувилагчийн костюм — Скраб',
-                    'description' => 'V хүзүүтэй скраб цамц + өмд. Эмнэлэг, лабораторид тохиромжтой.',
+                    'name' => 'Сувилагчийн костюм — Скраб хөх',
+                    'description' => 'V хүзүүтэй скраб цамц + өмд. Эмнэлэг, лабораторид тохиромжтой. Хөх өнгө.',
                     'category' => 'Эмнэлэг',
                     'is_featured' => true,
                     'badge' => 'Хит',
                 ],
                 'variants' => [
-                    ['color' => 'Цэнхэр', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 49000, 'stock' => 45],
-                    ['color' => 'Ногоон', 'sizes' => ['S', 'M', 'L', 'XL'], 'price' => 49000, 'stock' => 30],
-                    ['color' => 'Ягаан', 'sizes' => ['S', 'M', 'L'], 'price' => 49000, 'stock' => 20],
+                    ['color' => 'Хөх', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 49000, 'stock' => 45],
                 ],
                 'images' => [
-                    ['url' => 'https://picsum.photos/seed/scrub-set-blue/800/1000.webp', 'is_primary' => true],
-                    ['url' => 'https://picsum.photos/seed/scrub-set-green/800/1000.webp', 'is_primary' => false],
+                    ['filename' => 'px-42', 'is_primary' => true],
+                    ['filename' => 'px-44', 'is_primary' => false],
                 ],
             ],
-
-            // --- Нярав / Үйлчилгээ (Service) ---
+            // 10. Сувилагчийн костюм — Скраб улаан
             [
                 'product' => [
-                    'name' => 'Зөөгчийн цамц — Хар',
-                    'description' => 'Товчтой сонгодог загварын зөөгчийн цамц. Тохилог даавуу, бүх улирлын хувцас.',
-                    'category' => 'Нярав / Үйлчилгээ',
-                    'is_featured' => true,
-                    'badge' => 'Хит',
-                ],
-                'variants' => [
-                    ['color' => 'Хар', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 45000, 'stock' => 55],
-                    ['color' => 'Цагаан', 'sizes' => ['S', 'M', 'L', 'XL'], 'price' => 45000, 'stock' => 35],
-                ],
-                'images' => [
-                    ['url' => 'https://picsum.photos/seed/waiter-shirt-black/800/1000.webp', 'is_primary' => true],
-                    ['url' => 'https://picsum.photos/seed/waiter-shirt-white/800/1000.webp', 'is_primary' => false],
-                ],
-            ],
-            [
-                'product' => [
-                    'name' => 'Үйлчилгээний фартук — Бүсэлхий',
-                    'description' => 'Бүсэлхийн урт фартук. Ресторан, кофе шоп-д тохиромжтой.',
-                    'category' => 'Нярав / Үйлчилгээ',
+                    'name' => 'Сувилагчийн костюм — Скраб улаан',
+                    'description' => 'V хүзүүтэй скраб цамц + өмд. Эмнэлэг, лабораторид тохиромжтой. Улаан өнгө.',
+                    'category' => 'Эмнэлэг',
                     'is_featured' => false,
                     'badge' => null,
                 ],
                 'variants' => [
-                    ['color' => 'Хар', 'sizes' => ['M', 'L'], 'price' => 35000, 'stock' => 40],
-                    ['color' => 'Бор', 'sizes' => ['M', 'L'], 'price' => 35000, 'stock' => 25],
-                    ['color' => 'Улбар шар', 'sizes' => ['M', 'L'], 'price' => 38000, 'stock' => 15],
+                    ['color' => 'Улаан', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 49000, 'stock' => 40],
                 ],
                 'images' => [
-                    ['url' => 'https://picsum.photos/seed/service-apron-black/800/1000.webp', 'is_primary' => true],
+                    ['filename' => 'px-46', 'is_primary' => true],
+                    ['filename' => 'px-48', 'is_primary' => false],
+                    ['filename' => 'px-50', 'is_primary' => false],
                 ],
             ],
-
-            // --- Нарийн боовчин (Baker/Pastry) ---
+            // 11. Эмнэлгийн костюм — Цэцэгтэй
             [
                 'product' => [
-                    'name' => 'Нарийн боовчны фартук — Бүтэн',
-                    'description' => 'Гурил, тос тэсвэртэй бүтэн фартук. Нарийн боовны цехэд зориулсан.',
-                    'category' => 'Нарийн боовчин',
-                    'is_featured' => true,
-                    'badge' => null,
-                ],
-                'variants' => [
-                    ['color' => 'Улбар шар', 'sizes' => ['M', 'L', 'XL'], 'price' => 39000, 'stock' => 30],
-                    ['color' => 'Хар', 'sizes' => ['M', 'L', 'XL'], 'price' => 39000, 'stock' => 25],
-                ],
-                'images' => [
-                    ['url' => 'https://picsum.photos/seed/baker-apron-orange/800/1000.webp', 'is_primary' => true],
-                ],
-            ],
-            [
-                'product' => [
-                    'name' => 'Нарийн боовчны малгай — Берет',
-                    'description' => 'Сонгодог загварын берет малгай. Нарийн боовчин, тогоочид зориулсан.',
-                    'category' => 'Нарийн боовчин',
+                    'name' => 'Эмнэлгийн костюм — Цэцэгтэй',
+                    'description' => 'Цэцэгтэй хээтэй эмнэлгийн костюм. Хүүхдийн эмч, шүдний эмчид тохиромжтой.',
+                    'category' => 'Эмнэлэг',
                     'is_featured' => false,
                     'badge' => null,
                 ],
                 'variants' => [
-                    ['color' => 'Цагаан', 'sizes' => ['M', 'L'], 'price' => 18000, 'stock' => 45],
-                    ['color' => 'Хар', 'sizes' => ['M', 'L'], 'price' => 18000, 'stock' => 30],
+                    ['color' => 'Цэцэгтэй хөх', 'sizes' => ['S', 'M', 'L', 'XL'], 'price' => 49000, 'stock' => 30],
                 ],
                 'images' => [
-                    ['url' => 'https://picsum.photos/seed/baker-beret-white/800/1000.webp', 'is_primary' => true],
+                    ['filename' => 'px-52', 'is_primary' => true],
+                    ['filename' => 'px-54', 'is_primary' => false],
+                    ['filename' => 'px-56', 'is_primary' => false],
                 ],
             ],
+            // 12. Тогоочийн хантааз — Улаан
             [
                 'product' => [
-                    'name' => 'Тогоочийн хантааз — Богино ханцуй',
-                    'description' => 'Зуны улиралд зориулсан богино ханцуйтай тогоочийн хантааз. Агааржуулалттай даавуу.',
+                    'name' => 'Тогоочийн хантааз — Улаан',
+                    'description' => 'Улаан өнгөтэй тогоочийн хантааз. Давхар товчтой, загварлаг дизайн.',
                     'category' => 'Тогооч',
                     'is_featured' => true,
-                    'badge' => 'Шинэ',
+                    'badge' => null,
                 ],
                 'variants' => [
-                    ['color' => 'Цагаан', 'sizes' => ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL'], 'price' => 59000, 'stock' => 50],
-                    ['color' => 'Саарал', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 62000, 'stock' => 20],
+                    ['color' => 'Улаан', 'sizes' => ['S', 'M', 'L', 'XL', '2XL'], 'price' => 65000, 'stock' => 30],
                 ],
                 'images' => [
-                    ['url' => 'https://picsum.photos/seed/chef-jacket-short/800/1000.webp', 'is_primary' => true],
-                    ['url' => 'https://picsum.photos/seed/chef-jacket-short-back/800/1000.webp', 'is_primary' => false],
+                    ['filename' => 'px-58', 'is_primary' => true],
+                    ['filename' => 'px-60', 'is_primary' => false],
                 ],
             ],
+            // 13. Тогоочийн малгай — Пилотка
             [
                 'product' => [
-                    'name' => 'Эмнэлгийн бээлий — Нитрил',
-                    'description' => 'Нэг удаагийн нитрил бээлий. 100ш/хайрцаг. Латекс агуулаагүй.',
-                    'category' => 'Эмнэлэг',
+                    'name' => 'Тогоочийн малгай — Пилотка',
+                    'description' => 'Хөнгөн, агааржуулалттай пилотка загварын тогоочийн малгай.',
+                    'category' => 'Тогооч',
                     'is_featured' => false,
                     'badge' => null,
                 ],
                 'variants' => [
-                    ['color' => 'Цэнхэр', 'sizes' => ['S', 'M', 'L', 'XL'], 'price' => 25000, 'stock' => 100],
+                    ['color' => 'Хар', 'sizes' => ['M', 'L'], 'price' => 15000, 'stock' => 40],
+                    ['color' => 'Улаан', 'sizes' => ['M', 'L'], 'price' => 15000, 'stock' => 30],
                 ],
-                'images' => [
-                    ['url' => 'https://picsum.photos/seed/nitrile-gloves-blue/800/1000.webp', 'is_primary' => true],
-                ],
+                'images' => [],
             ],
+            // 14. Тогоочийн малгай — Берет (зурвас)
             [
                 'product' => [
-                    'name' => 'Эмнэлгийн маск — 3 давхар',
-                    'description' => '3 давхар хамгаалалттай нэг удаагийн маск. 50ш/хайрцаг.',
-                    'category' => 'Эмнэлэг',
+                    'name' => 'Тогоочийн малгай — Берет (зурвас)',
+                    'description' => 'Зурвас хээтэй берет загварын тогоочийн малгай. Нарийн боовчин, тогоочид зориулсан.',
+                    'category' => 'Тогооч',
                     'is_featured' => false,
                     'badge' => null,
                 ],
                 'variants' => [
-                    ['color' => 'Цэнхэр', 'sizes' => ['M'], 'price' => 15000, 'stock' => 200],
+                    ['color' => 'Зурвас', 'sizes' => ['M', 'L'], 'price' => 18000, 'stock' => 35],
                 ],
-                'images' => [
-                    ['url' => 'https://picsum.photos/seed/medical-mask-blue/800/1000.webp', 'is_primary' => true],
-                ],
+                'images' => [],
             ],
         ];
 
@@ -225,7 +264,6 @@ class ProductSeeder extends Seeder
             foreach ($data['variants'] as $variantGroup) {
                 foreach ($variantGroup['sizes'] as $size) {
                     $sku = Str::upper(Str::slug($product->name, '-')) . '-' . Str::upper(Str::slug($variantGroup['color'])) . '-' . Str::upper(Str::slug($size));
-                    // Truncate SKU if too long
                     $sku = Str::limit($sku, 50, '');
                     $variant = ProductVariant::create([
                         'product_id' => $product->id,
