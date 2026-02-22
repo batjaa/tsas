@@ -196,7 +196,7 @@
                         </svg>
                         <div>
                             <p class="text-sm text-gray-500">Захиалга өгөх, лавлах</p>
-                            <a href="tel:+97677001122" class="font-mono font-semibold text-charcoal hover:text-safety transition-colors">7700-1122</a>
+                            <a href="tel:+976{{ config('site.phone') }}" class="font-mono font-semibold text-charcoal hover:text-safety transition-colors">{{ substr(config('site.phone'), 0, 4) }}-{{ substr(config('site.phone'), 4) }}</a>
                         </div>
                     </div>
                 </div>
