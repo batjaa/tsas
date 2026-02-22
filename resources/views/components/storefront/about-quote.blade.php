@@ -3,7 +3,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <!-- Image -->
             <div class="reveal">
-                <img src="https://picsum.photos/seed/about-owner/600/500.webp" alt="TSAS эзэмшигч" class="w-full h-80 lg:h-96 object-cover" />
+                <img src="/images/mom-hero.jpg" alt="TSAS эзэмшигч" class="w-full h-80 lg:h-96 object-cover" />
             </div>
 
             <!-- Quote -->
