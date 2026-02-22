@@ -1,6 +1,6 @@
 <x-layouts.storefront title="Нүүр">
     <!-- Hero -->
-    <x-storefront.hero />
+    <x-storefront.hero :images="$heroImages" />
 
     <!-- Divider -->
     <x-storefront.wavy-divider />
@@ -18,6 +18,7 @@
                         :count="$cat['count']"
                         :image="$cat['image']"
                         :icon="$cat['icon']"
+                        :accent="$cat['accent']"
                         :href="'/products?category=' . urlencode($cat['title'])"
                     />
                 @endforeach
