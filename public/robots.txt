@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /cart
+Disallow: /account
+Disallow: /dashboard
+Disallow: /profile
+
+Sitemap: https://tsas.mn/sitemap.xml

@@ -16,6 +16,9 @@
 
         <title>{{ $pageTitle }}</title>
 
+        <link rel="canonical" href="{{ $pageUrl }}">
+        <link rel="icon" href="/favicon.ico">
+
         <!-- Open Graph -->
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ $pageUrl }}">

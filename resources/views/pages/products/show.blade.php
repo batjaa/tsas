@@ -1,4 +1,4 @@
-<x-layouts.storefront :title="$product->name">
+<x-layouts.storefront :title="$product->name" :description="$product->description" :image="$product->primary_image_url">
     <section class="bg-white py-10 lg:py-14">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Breadcrumb -->
@@ -230,4 +230,22 @@
 
     <!-- Bottom padding for mobile bottom bar -->
     <div class="h-14 lg:hidden"></div>
+
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org',
+        '@type' => 'Product',
+        'name' => $product->name,
+        'description' => $product->description,
+        'image' => $product->primary_image_url,
+        'offers' => [
+            '@type' => 'Offer',
+            'price' => $product->min_variant_price ?? $product->variants->min('price') ?? 0,
+            'priceCurrency' => 'MNT',
+            'availability' => $product->variants->contains('is_available', true)
+                ? 'https://schema.org/InStock'
+                : 'https://schema.org/OutOfStock',
+        ],
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
+    </script>
 </x-layouts.storefront>
