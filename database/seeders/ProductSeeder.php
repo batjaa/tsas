@@ -243,7 +243,9 @@ class ProductSeeder extends Seeder
             foreach ($data['images'] as $index => $image) {
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'image_url' => $image['url'],
+                    'disk' => null,
+                    'path' => null,
+                    'variants' => null,
                     'order' => $index,
                     'is_primary' => $image['is_primary'],
                 ]);

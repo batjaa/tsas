@@ -84,8 +84,13 @@
                         $otherImages = $images->where('id', '!=', optional($primaryImage)->id)->take(3);
                     @endphp
 
-                    @if($primaryImage)
-                        <img src="{{ $primaryImage->image_url }}" alt="{{ $product->name }}" class="w-full aspect-[3/4] object-cover" />
+                    @if($primaryImage && $primaryImage->disk)
+                        <x-storefront.responsive-image
+                            :image="$primaryImage"
+                            :alt="$product->name"
+                            class="w-full aspect-[3/4] object-cover"
+                            sizes="(min-width: 1024px) 50vw, 100vw"
+                        />
                     @else
                         <div class="w-full aspect-[3/4] bg-gray-100 flex items-center justify-center">
                             <span class="text-gray-400 font-oswald">Зураггүй</span>
@@ -95,7 +100,14 @@
                     @if($otherImages->isNotEmpty())
                         <div class="grid grid-cols-3 gap-3 mt-3">
                             @foreach($otherImages as $image)
-                                <img src="{{ $image->image_url }}" alt="{{ $product->name }}" class="w-full aspect-square object-cover cursor-pointer hover:opacity-80 transition-opacity" />
+                                @if($image->disk)
+                                    <x-storefront.responsive-image
+                                        :image="$image"
+                                        :alt="$product->name"
+                                        class="w-full aspect-square object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                                        sizes="(min-width: 1024px) 16vw, 33vw"
+                                    />
+                                @endif
                             @endforeach
                         </div>
                     @endif
