@@ -3,16 +3,19 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\TrackPageVisit;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', HomeController::class)->name('home');
+Route::middleware(TrackPageVisit::class)->group(function () {
+    Route::get('/', HomeController::class)->name('home');
 
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 
-Route::view('/about', 'pages.about');
-Route::view('/account', 'pages.account');
-Route::view('/cart', 'pages.cart');
+    Route::view('/about', 'pages.about');
+    Route::view('/account', 'pages.account');
+    Route::view('/cart', 'pages.cart');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -25,3 +28,7 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::fallback(function () {
+    abort(404);
+})->middleware(TrackPageVisit::class);
