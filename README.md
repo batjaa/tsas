@@ -1,3 +1,122 @@
+# TSAS — Professional Work Uniforms (Мэргэжлийн Ажлын Хувцас)
+
+E-commerce storefront for professional uniforms (cook, medical, service) serving the Mongolian market at [tsas.mn](https://tsas.mn).
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Backend | Laravel 12, PHP 8.2+ |
+| Auth | Laravel Breeze (session-based) |
+| Admin | Laravel Nova 5 |
+| Frontend | Blade templates, Alpine.js, Tailwind CSS v3 |
+| Build | Vite 7 |
+| Images | Intervention Image (WebP, 4 responsive variants) |
+| Storage | Local disk or S3 (configurable) |
+| Database | MySQL |
+| Dev environment | Laravel Sail (Docker) |
+
+## Project Structure
+
+```
+app/
+├── Console/Commands/        # Artisan commands (sitemap:generate, etc.)
+├── Helpers/ColorMap.php     # Mongolian color name → hex mapping
+├── Http/Controllers/
+│   ├── HomeController.php   # Homepage (featured products, categories, hero)
+│   └── ProductController.php # Product listing + detail
+├── Models/
+│   ├── Product.php          # name, description, category, badge, is_featured
+│   ├── ProductVariant.php   # sku, size, color, price, stock, is_available
+│   └── ProductImage.php     # disk, path, variants (json), srcset support
+├── Nova/                    # Admin panel resources + actions
+│   ├── Product.php
+│   ├── ProductVariant.php
+│   ├── ProductImage.php
+│   └── Actions/             # UploadProductImages, SetPrimaryImage
+├── Observers/               # ProductImageObserver (cleanup on delete)
+└── Services/
+    └── ImageProcessingService.php  # Upload → orient → WebP → 4 size variants
+
+resources/views/
+├── components/
+│   └── layouts/
+│       └── storefront.blade.php    # Main storefront layout (SEO meta, OG tags)
+│   └── storefront/
+│       ├── header.blade.php        # Sticky header, mobile hamburger
+│       ├── footer.blade.php
+│       ├── hero.blade.php          # Image collage hero
+│       ├── product-card.blade.php  # Product grid card
+│       ├── profession-card.blade.php # Category card with icon
+│       ├── responsive-image.blade.php # <img> with srcset
+│       ├── phone-cta.blade.php
+│       ├── about-quote.blade.php
+│       ├── announcement-bar.blade.php
+│       ├── mobile-bottom-bar.blade.php
+│       └── wavy-divider.blade.php
+├── pages/
+│   ├── home.blade.php
+│   ├── about.blade.php
+│   ├── cart.blade.php
+│   ├── account.blade.php
+│   └── products/
+│       ├── index.blade.php         # Grid with category filter
+│       └── show.blade.php          # Detail with variant picker (Alpine.js)
+
+config/
+├── site.php          # phone number
+└── media.php         # disk, format (webp), quality (80), variant sizes
+```
+
+## Routes
+
+| Method | URI | Handler | Description |
+|--------|-----|---------|-------------|
+| GET | `/` | HomeController | Homepage with featured products, categories |
+| GET | `/products` | ProductController@index | Product listing, optional `?category=` filter |
+| GET | `/products/{id}` | ProductController@show | Product detail with variant picker |
+| GET | `/about` | view | About page |
+| GET | `/cart` | view | Cart (placeholder) |
+| GET | `/account` | view | Account (placeholder) |
+| GET | `/dashboard` | view | Auth dashboard (Breeze) |
+| * | `/profile` | ProfileController | Profile CRUD (auth) |
+| * | `/nova` | Nova | Admin panel (auth) |
+
+## Data Model
+
+```
+Product
+├── id, name, description, category, min_variant_price, is_featured, badge
+├── has many → ProductVariant (sku, size, color, price, stock, is_available)
+└── has many → ProductImage (disk, path, original_filename, mime_type, size, variants, order, is_primary)
+```
+
+- **Variants** represent size/color combinations, each with its own price and stock
+- **Images** store the original path plus a `variants` JSON column with responsive sizes: thumbnail (150w), small (400w), medium (800w), large (1200w)
+- All images auto-converted to WebP on upload via `ImageProcessingService`
+
+## Design Tokens
+
+| Token | Value |
+|-------|-------|
+| Concrete (background) | `#E8E4DF` |
+| Charcoal (text/primary) | `#2D2926` |
+| Safety Orange (accent/CTA) | `#E8651A` |
+| Steel Blue (secondary) | `#4A6FA5` |
+| Heading font | Oswald |
+| Body font | Source Sans 3 |
+| Mono font | JetBrains Mono |
+
+## SEO
+
+- Open Graph + Twitter Card meta tags on all pages (via storefront layout)
+- Canonical URLs on every page
+- JSON-LD structured data (Schema.org `Product`) on product pages
+- `php artisan sitemap:generate` → `public/sitemap.xml`
+- `robots.txt` with sitemap directive and disallow rules for private paths
+
+---
+
 # First-Time Setup
 
 ## 1. Install prerequisites
