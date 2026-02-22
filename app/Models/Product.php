@@ -33,7 +33,7 @@ class Product extends Model
 
     public function getPrimaryImageUrlAttribute(): ?string
     {
-        return $this->primaryImage?->image_url ?? $this->images->first()?->image_url;
+        return $this->primaryImage?->url() ?? $this->images->first()?->url();
     }
 
     public function variants(): HasMany
