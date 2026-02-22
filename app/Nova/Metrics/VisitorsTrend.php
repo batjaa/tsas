@@ -12,7 +12,7 @@ class VisitorsTrend extends Trend
 
     public function calculate(NovaRequest $request)
     {
-        return $this->countByDays($request, PageVisit::human(), dateColumn: 'visited_at')
+        return $this->countByDays($request, PageVisit::human(), 'visited_at')
             ->showSumValue();
     }
 
