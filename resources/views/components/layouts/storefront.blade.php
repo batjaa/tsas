@@ -3,7 +3,7 @@
 @php
     $pageTitle = $title ? $title . ' — ' . config('app.name', 'TSAS') : config('app.name', 'TSAS') . ' — Мэргэжлийн ажлын хувцас';
     $pageDescription = $description ?? 'Тогооч, эмч, зөөгч, нарийн боовчин — бүх мэргэжлийн ажлын хувцсыг нэг дороос. Монгол даяар хүргэлттэй.';
-    $pageImage = $image ?? asset('images/mom-hero.jpg');
+    $pageImage = $image ?? asset('images/tsas-preview.png');
     $pageUrl = url()->current();
 @endphp
 
