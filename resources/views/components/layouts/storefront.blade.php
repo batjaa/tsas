@@ -3,7 +3,7 @@
 @php
     $pageTitle = $title ? $title . ' — ' . config('app.name', 'TSAS') : config('app.name', 'TSAS') . ' — Мэргэжлийн ажлын хувцас';
     $pageDescription = $description ?? 'Тогооч, эмч, зөөгч, нарийн боовчин — бүх мэргэжлийн ажлын хувцсыг нэг дороос. Монгол даяар хүргэлттэй.';
-    $pageImage = $image ?? asset('images/tsas-preview.png');
+    $pageImage = $image ?? asset('images/tsas-og.jpg');
     $pageUrl = url()->current();
 @endphp
 
@@ -25,6 +25,8 @@
         <meta property="og:title" content="{{ $pageTitle }}">
         <meta property="og:description" content="{{ $pageDescription }}">
         <meta property="og:image" content="{{ $pageImage }}">
+        <meta property="og:image:width" content="1200">
+        <meta property="og:image:height" content="630">
         <meta property="og:locale" content="mn_MN">
         <meta property="og:site_name" content="TSAS">
 

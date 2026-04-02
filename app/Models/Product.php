@@ -36,6 +36,11 @@ class Product extends Model
         return $this->primaryImage?->url() ?? $this->images->first()?->url();
     }
 
+    public function getOgImageUrlAttribute(): ?string
+    {
+        return $this->primaryImage?->url('large') ?? $this->images->first()?->url('large');
+    }
+
     public function variants(): HasMany
     {
         return $this->hasMany(ProductVariant::class);

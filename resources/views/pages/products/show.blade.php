@@ -1,4 +1,4 @@
-<x-layouts.storefront :title="$product->name" :description="$product->description" :image="$product->primary_image_url">
+<x-layouts.storefront :title="$product->name" :description="$product->description" :image="$product->og_image_url">
     <section class="bg-white py-10 lg:py-14">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Breadcrumb -->
