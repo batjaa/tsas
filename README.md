@@ -220,3 +220,9 @@ Coolify deploys `compose.yml` from `master`: PHP 8.4/Apache, MySQL 8.0, and a de
 Configure `COMPOSER_AUTH` as a build-only secret containing Nova HTTP Basic credentials and enable Coolify build secrets. Set database passwords for both build and runtime interpolation. Keep `RUN_MIGRATIONS=false` while importing and verifying a migration snapshot; enable it during production cutover. No queue worker or scheduler is required by the current application.
 
 Set `NIGHTWATCH_ENABLED=true`, the TSAS Production environment token as `NIGHTWATCH_TOKEN`, `NIGHTWATCH_INGEST_URI=nightwatch:2411`, `LOG_CHANNEL=stack`, and `LOG_STACK=stderr,nightwatch` in Coolify runtime settings. The agent runs from the same application image, restarts automatically, and accepts traffic only inside the container network; port 2411 is not published. Verify connectivity with `php artisan nightwatch:status` inside the app container and confirm requests in the TSAS Production dashboard. Nightwatch is disabled in `.env.example` and PHPUnit to keep local development and tests out of production telemetry.
+
+## Production database maintenance
+
+The Coolify Compose stack uses MySQL 8.4.11. Database volumes have versioned names so the pre-upgrade volumes can be retained for recovery. Back up and rehearse a restore before changing database versions; stop app writers and drain workers before the final copy.
+
+Retained old volumes are migration snapshots, not replicas. Reconcile writes made after the upgrade before any rollback; never start an older database image against an upgraded data directory.
