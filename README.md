@@ -212,3 +212,9 @@ Publish Nova assets and create an admin user if needed:
 ./vendor/bin/sail artisan nova:publish
 ./vendor/bin/sail artisan nova:user
 ```
+
+## Coolify production
+
+Coolify deploys `compose.yml` from `master`: PHP 8.4/Apache and MySQL 8.0 with persistent database and local upload volumes. R2 remains the production media store. Copy the existing app key, database credentials, Nova license, and R2 credentials into Coolify runtime settings. Set `TRUSTED_PROXIES=*` behind the private ingress and `SESSION_SECURE_COOKIE=true`.
+
+Configure `COMPOSER_AUTH` as a build-only secret containing Nova HTTP Basic credentials and enable Coolify build secrets. Set database passwords for both build and runtime interpolation. Keep `RUN_MIGRATIONS=false` while importing and verifying a migration snapshot; enable it during production cutover. No queue worker or scheduler is required by the current application.
