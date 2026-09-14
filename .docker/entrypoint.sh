@@ -17,6 +17,9 @@ case "${1:-web}" in
         php artisan storage:link --no-interaction
         exec apache2-foreground
         ;;
+    nightwatch)
+        exec gosu www-data php artisan nightwatch:agent --listen-on=0.0.0.0:2411
+        ;;
     worker)
         if [ "${QUEUE_WORKER_ENABLED:-true}" != "true" ]; then
             exec sleep infinity

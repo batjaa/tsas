@@ -1,12 +1,12 @@
 services:
   app:
-    build:
+    build: &app-build
       context: .
       secrets:
         - COMPOSER_AUTH
     init: true
     stop_signal: SIGTERM
-    environment:
+    environment: &app-environment
       APP_NAME: ${APP_NAME}
       APP_ENV: ${APP_ENV}
       APP_KEY: ${APP_KEY}
@@ -64,6 +64,9 @@ services:
       SESSION_SECURE_COOKIE: ${SESSION_SECURE_COOKIE}
       TRUSTED_PROXIES: ${TRUSTED_PROXIES}
       RUN_MIGRATIONS: ${RUN_MIGRATIONS}
+      NIGHTWATCH_ENABLED: ${NIGHTWATCH_ENABLED:-true}
+      NIGHTWATCH_TOKEN: ${NIGHTWATCH_TOKEN}
+      NIGHTWATCH_INGEST_URI: ${NIGHTWATCH_INGEST_URI:-nightwatch:2411}
     volumes:
       - app-storage:/var/www/html/storage/app
     expose:
@@ -77,6 +80,24 @@ services:
       timeout: 5s
       retries: 10
       start_period: 60s
+    restart: unless-stopped
+
+  nightwatch:
+    build: *app-build
+    init: true
+    stop_signal: SIGTERM
+    stop_grace_period: 30s
+    command: nightwatch
+    environment: *app-environment
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "php", "artisan", "nightwatch:status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
     restart: unless-stopped
 
   db:
